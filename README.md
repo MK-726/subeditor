@@ -80,4 +80,4 @@ python fix_subs.py movie.srt -1800
 
 ## 📄 License
 
-Free to use and modify for personal use.
+This project is licensed under the [MIT License](LICENSE).
