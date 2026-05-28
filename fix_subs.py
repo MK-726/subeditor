@@ -27,8 +27,7 @@ def fix_subtitles(input_file, offset_ms):
         content = f.read()
 
     # Parse into subtitle objects
-    # ignore_errors=True skips any malformed blocks instead of crashing
-    subtitles = list(srt.parse(content, ignore_errors=True))
+    subtitles = list(srt.parse(content))
 
     # Build the time offset
     offset = timedelta(milliseconds=offset_ms)
