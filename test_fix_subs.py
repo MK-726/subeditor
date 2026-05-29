@@ -55,3 +55,20 @@ def output_file(srt_file):
     """Return the expected output file path for a given input."""
     path = Path(srt_file)
     return path.with_stem(path.stem + '_fixed')
+
+
+# ── Tests ──────────────────────────────────────────────────────────────────
+
+def test_positive_offset_shifts_timestamps_forward(srt_file, output_file):
+    '''Positive offset should delay all subtitles (shift forward in time).'''
+    offset = 2_500
+    fix_subtitles(srt_file, offset)
+
+    result = read_srt_file(output_file)
+    original = make_subtitles()
+
+    for original_sub, result_sub in zip(original, result):
+        assert result_sub.start == original_sub.start + \
+            timedelta(milliseconds=offset)
+        assert result_sub.end == original_sub.end + \
+            timedelta(milliseconds=offset)
