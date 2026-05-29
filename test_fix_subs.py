@@ -72,3 +72,20 @@ def test_positive_offset_shifts_timestamps_forward(srt_file, output_file):
             timedelta(milliseconds=offset)
         assert result_sub.end == original_sub.end + \
             timedelta(milliseconds=offset)
+
+
+def test_negative_offset_shifts_timestamps_backward(srt_file, output_file):
+    '''Negative offset should advance all subtitles (shift backward in time).'''
+    offset = -2_000
+    fix_subtitles(srt_file, offset)
+
+    result = read_srt_file(output_file)
+    original = make_subtitles()
+
+    for original_sub, result_sub in zip(original, result):
+        assert result_sub.start == (
+            original_sub.start + timedelta(milliseconds=offset)
+        )
+        assert result_sub.end == (
+            original_sub.end + timedelta(milliseconds=offset)
+        )
