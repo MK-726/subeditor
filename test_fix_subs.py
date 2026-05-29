@@ -104,3 +104,10 @@ def test_zero_offset_leaves_timestamps_unchanged(srt_file, output_file):
     for original_sub, result_sub in zip(original, result):
         assert result_sub.start == original_sub.start
         assert result_sub.end == original_sub.end
+
+
+def test_output_file_is_created(srt_file, output_file):
+    """The output _fixed.srt file should exist after running the script."""
+    fix_subtitles(srt_file, 1_000)
+
+    assert output_file.exists()
