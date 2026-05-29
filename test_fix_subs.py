@@ -91,3 +91,16 @@ def test_negative_offset_shifts_timestamps_backward(srt_file, output_file):
         assert result_sub.end == (
             original_sub.end + timedelta(milliseconds=offset)
         )
+
+
+def test_zero_offset_leaves_timestamps_unchanged(srt_file, output_file):
+    """Zero offset should produce identical timestamps to the original."""
+    offset = 0
+    fix_subtitles(srt_file, offset)
+
+    result = read_srt_file(output_file)
+    original = make_subtitles()
+
+    for original_sub, result_sub in zip(original, result):
+        assert result_sub.start == original_sub.start
+        assert result_sub.end == original_sub.end
