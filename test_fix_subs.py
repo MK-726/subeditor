@@ -38,3 +38,20 @@ def make_subtitles():
         srt.Subtitle(index=3, start=timedelta(seconds=30),
                      end=timedelta(seconds=35), content="Goodbye!"),
     ]
+
+
+# ── Fixtures ───────────────────────────────────────────────────────────────
+
+@pytest.fixture
+def srt_file(tmp_path):
+    """Create a temporary SRT file and return its path."""
+    path = str(tmp_path / 'test.srt')
+    make_srt_file(path, make_subtitles())
+    return path
+
+
+@pytest.fixture
+def output_file(srt_file):
+    """Return the expected output file path for a given input."""
+    path = Path(srt_file)
+    return path.with_stem(path.stem + '_fixed')
