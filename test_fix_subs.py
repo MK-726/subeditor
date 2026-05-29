@@ -106,8 +106,9 @@ def test_zero_offset_leaves_timestamps_unchanged(srt_file, output_file):
         assert result_sub.end == original_sub.end
 
 
-def test_output_file_is_created(srt_file, output_file):
-    """The output _fixed.srt file should exist after running the script."""
+def test_output_file_is_created_with_fixed_suffix(srt_file, output_file):
+    """Output file should exist and be named <original>_fixed.srt."""
     fix_subtitles(srt_file, 1_000)
 
     assert output_file.exists()
+    assert '_fixed.srt' in str(output_file)
