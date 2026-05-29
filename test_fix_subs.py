@@ -112,3 +112,16 @@ def test_output_file_is_created_with_fixed_suffix(srt_file, output_file):
 
     assert output_file.exists()
     assert '_fixed.srt' in str(output_file)
+
+
+def test_original_file_is_not_modified(srt_file):
+    """
+    The original SRT file should remain unchanged after running the script.
+    """
+    original = read_srt_file(srt_file)
+    fix_subtitles(srt_file, 3_000)
+    after = read_srt_file(srt_file)
+
+    for original_sub, after_sub in zip(original, after):
+        assert after_sub.start == original_sub.start
+        assert after_sub.end == original_sub.end
