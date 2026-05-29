@@ -17,14 +17,19 @@ Examples:
 import srt
 import sys
 from datetime import timedelta
+from pathlib import Path
 
 
 def fix_subtitles(input_file, offset_ms):
     '''Fix out of sync subtitles.'''
 
+    # Wrap the input file string in a Path object
+    input_path = Path(input_file)
+    # Build output path e.g. "movie.srt" → "movie_fixed.srt"
+    output_path = input_path.with_stem(input_path.stem + '_fixed')
+
     # Read the original SRT file
-    with open(input_file, "r", encoding="utf-8") as f:
-        content = f.read()
+    content = input_path.read_text(encoding='utf-8')
 
     # Parse into subtitle objects
     subtitles = list(srt.parse(content))
@@ -38,11 +43,9 @@ def fix_subtitles(input_file, offset_ms):
         sub.end += offset
 
     # Write corrected SRT to a new file
-    output_file = input_file.replace(".srt", "_fixed.srt")
-    with open(output_file, "w", encoding="utf-8") as f:
-        f.write(srt.compose(subtitles))
+    output_path.write_text(srt.compose(subtitles), encoding='utf-8')
 
-    print(f"Done! Corrected file saved as: {output_file}")
+    print(f"Done! Corrected file saved as: {output_path}")
 
 
 # Entry point: read arguments from the command line
