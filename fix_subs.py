@@ -54,11 +54,13 @@ def fix_subtitles(input_file, offset_ms):
 
 
 def invalid_negative_offset(offset, subtitles):
+    '''Return true if entered negative offset is too large.'''
     first_sub = subtitles[0]
     return first_sub.start + offset < timedelta(0)
 
 
 def display_error_message(offset_ms, subtitles):
+    '''Display error messages for invalid large offsets.'''
     first_sub = subtitles[0]
     offset_timestamp = srt.timedelta_to_srt_timestamp(
         timedelta(milliseconds=abs(offset_ms))
