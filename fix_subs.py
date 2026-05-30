@@ -37,6 +37,11 @@ def fix_subtitles(input_file, offset_ms):
     # Build the time offset
     offset = timedelta(milliseconds=offset_ms)
 
+    # Check if offset would push the first subtitle below zero.
+    if invalid_negative_offset(offset, subtitles):
+        display_error_message(offset_ms, subtitles)
+        sys.exit(1)
+
     # Shift every subtitle's start and end time
     for sub in subtitles:
         sub.start += offset
@@ -46,6 +51,26 @@ def fix_subtitles(input_file, offset_ms):
     output_path.write_text(srt.compose(subtitles), encoding='utf-8')
 
     print(f"Done! Corrected file saved as: {output_path}")
+
+
+def invalid_negative_offset(offset, subtitles):
+    first_sub = subtitles[0]
+    return first_sub.start + offset < timedelta(0)
+
+
+def display_error_message(offset_ms, subtitles):
+    first_sub = subtitles[0]
+    offset_timestamp = srt.timedelta_to_srt_timestamp(
+        timedelta(milliseconds=abs(offset_ms))
+    )
+    first_sub_timestamp = srt.timedelta_to_srt_timestamp(first_sub.start)
+    message = (
+        f"Error: offset of {offset_ms:,}ms ({offset_timestamp}) is larger "
+        f"than the first subtitle's start time ({first_sub_timestamp}).\n"
+        f"Either the offset is wrong, or this subtitle file needs "
+        f"to be replaced."
+    )
+    print(message)
 
 
 # Entry point: read arguments from the command line
