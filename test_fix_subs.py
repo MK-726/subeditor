@@ -133,3 +133,12 @@ def test_large_negative_offset_raises_error(srt_file):
     """
     with pytest.raises(SystemExit):
         fix_subtitles(srt_file, -999_999)
+
+
+def test_empty_srt_file(tmp_path):
+    """Script should exit with an error if the SRT file is empty."""
+    empty_file = str(tmp_path / 'empty.srt')
+    Path(empty_file).write_text('', encoding='utf-8')
+
+    with pytest.raises(SystemExit):
+        fix_subtitles(empty_file, 1_000)
