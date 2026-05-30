@@ -18,6 +18,7 @@ import srt
 import sys
 from datetime import timedelta
 from pathlib import Path
+import logging
 
 
 def fix_subtitles(input_file, offset_ms):
@@ -32,7 +33,9 @@ def fix_subtitles(input_file, offset_ms):
     content = input_path.read_text(encoding='utf-8')
 
     # Parse into subtitle objects
+    logging.disable(logging.WARNING)
     subtitles = list(srt.parse(content, ignore_errors=True))
+    logging.disable(logging.NOTSET)
 
     # Check for empty files or absence of srt content
     if not subtitles:
