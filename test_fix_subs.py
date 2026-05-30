@@ -125,3 +125,11 @@ def test_original_file_is_not_modified(srt_file):
     for original_sub, after_sub in zip(original, after):
         assert after_sub.start == original_sub.start
         assert after_sub.end == original_sub.end
+
+
+def test_large_negative_offset_raises_error(srt_file):
+    """
+    Script should exit with an error if offset would push timestamps below zero.
+    """
+    with pytest.raises(SystemExit):
+        fix_subtitles(srt_file, -999_999)
