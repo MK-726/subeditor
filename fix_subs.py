@@ -32,7 +32,15 @@ def fix_subtitles(input_file, offset_ms):
     content = input_path.read_text(encoding='utf-8')
 
     # Parse into subtitle objects
-    subtitles = list(srt.parse(content))
+    subtitles = list(srt.parse(content, ignore_errors=True))
+
+    # Check for empty files or absence of srt content
+    if not subtitles:
+        print(
+            'Error: the subtitle file is empty '
+            'or contains no valid subtitles.'
+        )
+        sys.exit(1)
 
     # Build the time offset
     offset = timedelta(milliseconds=offset_ms)
