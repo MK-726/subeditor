@@ -14,11 +14,12 @@ Examples:
         python fix_subs.py movie.srt -1800      (advance by 1.8 seconds)
 """
 
-import srt
+import logging
 import sys
 from datetime import timedelta
 from pathlib import Path
-import logging
+
+import srt
 
 
 def fix_subtitles(input_file, offset_ms):
@@ -27,7 +28,29 @@ def fix_subtitles(input_file, offset_ms):
     # Wrap the input file string in a Path object
     input_path = Path(input_file)
 
-    # Check if the file exits.
+    validate_file(input_path)
+
+    # Build output path e.g. "movie.srt" → "movie_fixed.srt"
+    output_path = input_path.with_stem(input_path.stem + '_fixed')
+
+    subtitles = parse_subtitles(input_path)
+
+    # Build the time offset
+    offset = timedelta(milliseconds=offset_ms)
+
+    validate_offset(offset, subtitles, offset_ms)
+
+    subtitles = shift_timestamps(subtitles, offset)
+
+    # Write corrected SRT to a new file
+    output_path.write_text(srt.compose(subtitles), encoding='utf-8')
+
+    print(f"Done! Corrected file saved as: {output_path}")
+
+
+def validate_file(input_path):
+    """Check file exists and is an SRT file."""
+    # Check if the file exists.
     if not input_path.exists():
         print(f'Error: file not found: {input_path}.')
         sys.exit(1)
@@ -37,9 +60,9 @@ def fix_subtitles(input_file, offset_ms):
         print(f"Error: '{input_path.name}' is not a SRT file.")
         sys.exit(1)
 
-    # Build output path e.g. "movie.srt" → "movie_fixed.srt"
-    output_path = input_path.with_stem(input_path.stem + '_fixed')
 
+def parse_subtitles(input_path):
+    """Read and parse the SRT file into subtitle objects."""
     # Read the original SRT file
     content = input_path.read_text(encoding='utf-8')
 
@@ -55,24 +78,15 @@ def fix_subtitles(input_file, offset_ms):
             'or contains no valid subtitles.'
         )
         sys.exit(1)
+    return subtitles
 
-    # Build the time offset
-    offset = timedelta(milliseconds=offset_ms)
 
+def validate_offset(offset, subtitles, offset_ms):
+    """Check offset won't push timestamps below zero."""
     # Check if offset would push the first subtitle below zero.
     if invalid_negative_offset(offset, subtitles):
         display_error_message(offset_ms, subtitles)
         sys.exit(1)
-
-    # Shift every subtitle's start and end time
-    for sub in subtitles:
-        sub.start += offset
-        sub.end += offset
-
-    # Write corrected SRT to a new file
-    output_path.write_text(srt.compose(subtitles), encoding='utf-8')
-
-    print(f"Done! Corrected file saved as: {output_path}")
 
 
 def invalid_negative_offset(offset, subtitles):
@@ -95,6 +109,15 @@ def display_error_message(offset_ms, subtitles):
         f"to be replaced."
     )
     print(message)
+
+
+def shift_timestamps(subtitles, offset):
+    """Shift all subtitle timestamps by the given offset."""
+    # Shift every subtitle's start and end time
+    for sub in subtitles:
+        sub.start += offset
+        sub.end += offset
+    return subtitles
 
 
 # Entry point: read arguments from the command line
