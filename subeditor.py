@@ -65,8 +65,33 @@ def get_offset() -> int:
             print('Try Again.\n')
 
 
-def get_output_option(input_file):
-    pass
+def get_output_option(input_file: str) -> str:
+    '''Get output file path.'''
+    print('\nSTEP 4 — Output File')
+    print('-' * 50)
+    input_path = Path(input_file)
+
+    while True:
+        print('[R]  Replace the original file')
+        print('[N]  Save as a new file')
+        choice = input('Your choice (R / N): ').lower()
+
+        if choice not in ('r', 'n'):
+            print(f'Invalid choice: {choice}')
+            print('Try Again!\n')
+            continue
+
+        if choice == 'r':
+            print(f'✓  Will overwrite: {input_path.name}')
+            return str(input_path)
+
+        default = str(input_path.with_stem(input_path.stem + '_fixed'))
+        print(f'Suggested name: {default}')
+        custom = input(
+            'Press Enter to use suggestion or type a custom path: ').strip()
+        output_path = custom if custom else default
+        print(f'✓  Will save to: {output_path}')
+        return output_path
 
 
 def run():
