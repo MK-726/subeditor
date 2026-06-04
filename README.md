@@ -6,7 +6,7 @@ A simple Python script that fixes out-of-sync `.srt` subtitle files by shifting 
 
 ## 📋 Requirements
 
-- Python 3
+- Python 3.7 or higher
 - The `srt` library
 
 Install the `srt` library with:
