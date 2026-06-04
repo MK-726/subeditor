@@ -14,8 +14,13 @@ from fix_subs import fix_subtitles
 
 def get_input_file() -> str:
     '''Get path to the SRT file.'''
+    print('STEP 1 — Subtitle File')
+    print('-' * 50)
     while True:
-        input_path = Path(input('Enter file path to the SRT file: '))
+        print('Drag and drop your SRT file into this window,'
+              ' or type the full path to it.')
+
+        input_path = Path(input('Path: '))
 
         if not input_path.exists():
             print(f'Error: file not found: {input_path}')
@@ -25,6 +30,7 @@ def get_input_file() -> str:
             print(f'Error: file is not SRT: {input_path}')
             continue
 
+        print(f' ✓  File found: {input_path}')
         return str(input_path)
 
 
