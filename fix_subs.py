@@ -29,7 +29,7 @@ def fix_subtitles(input_file, offset_ms):
 
     # Check if the file exits.
     if not input_path.exists():
-        print(f'Error: file not found {input_path}.')
+        print(f'Error: file not found: {input_path}.')
         sys.exit(1)
 
     # Check if the file is SRT.
