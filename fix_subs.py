@@ -14,6 +14,8 @@ Examples:
         python fix_subs.py movie.srt -1800      (advance by 1.8 seconds)
 """
 
+from __future__ import annotations
+
 import logging
 import sys
 from datetime import timedelta
@@ -22,7 +24,11 @@ from pathlib import Path
 import srt
 
 
-def fix_subtitles(input_file, offset_ms):
+# Type alias for a list of srt.Subtitle objects
+SubtitleList = list[srt.Subtitle]
+
+
+def fix_subtitles(input_file: str, offset_ms: int) -> None:
     '''Fix out of sync subtitles.'''
 
     # Wrap the input file string in a Path object
@@ -48,7 +54,7 @@ def fix_subtitles(input_file, offset_ms):
     print(f"Done! Corrected file saved as: {output_path}")
 
 
-def validate_file(input_path):
+def validate_file(input_path: Path) -> None:
     """Check file exists and is an SRT file."""
     # Check if the file exists.
     if not input_path.exists():
@@ -61,7 +67,7 @@ def validate_file(input_path):
         sys.exit(1)
 
 
-def parse_subtitles(input_path):
+def parse_subtitles(input_path: Path) -> SubtitleList:
     """Read and parse the SRT file into subtitle objects."""
     # Read the original SRT file
     content = input_path.read_text(encoding='utf-8')
@@ -81,7 +87,9 @@ def parse_subtitles(input_path):
     return subtitles
 
 
-def validate_offset(offset, subtitles, offset_ms):
+def validate_offset(
+    offset: timedelta, subtitles: SubtitleList, offset_ms: int
+) -> None:
     """Check offset won't push timestamps below zero."""
     # Check if offset would push the first subtitle below zero.
     if invalid_negative_offset(offset, subtitles):
@@ -89,13 +97,17 @@ def validate_offset(offset, subtitles, offset_ms):
         sys.exit(1)
 
 
-def invalid_negative_offset(offset, subtitles):
+def invalid_negative_offset(
+        offset: timedelta, subtitles: SubtitleList
+) -> bool:
     '''Return true if entered negative offset is too large.'''
     first_sub = subtitles[0]
     return first_sub.start + offset < timedelta(0)
 
 
-def display_error_message(offset_ms, subtitles):
+def display_error_message(
+        offset_ms: int, subtitles: SubtitleList
+) -> None:
     '''Display error messages for invalid large offsets.'''
     first_sub = subtitles[0]
     offset_timestamp = srt.timedelta_to_srt_timestamp(
@@ -111,7 +123,9 @@ def display_error_message(offset_ms, subtitles):
     print(message)
 
 
-def shift_timestamps(subtitles, offset):
+def shift_timestamps(
+        subtitles: SubtitleList, offset: timedelta
+) -> SubtitleList:
     """Shift all subtitle timestamps by the given offset."""
     # Shift every subtitle's start and end time
     for sub in subtitles:
