@@ -141,7 +141,11 @@ if __name__ == "__main__":
         print("Example: python fix_subs.py movie.srt 2500")
         sys.exit(1)
 
-    input_file = sys.argv[1]
-    offset_ms = int(sys.argv[2])
+    try:
+        offset_ms = int(sys.argv[2])
+    except ValueError:
+        print('Error: offset must be a whole number (e.g. 2500 or -1800).')
+        sys.exit(1)
 
+    input_file = sys.argv[1]
     fix_subtitles(input_file, offset_ms)
