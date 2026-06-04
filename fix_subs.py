@@ -26,6 +26,17 @@ def fix_subtitles(input_file, offset_ms):
 
     # Wrap the input file string in a Path object
     input_path = Path(input_file)
+
+    # Check if the file exits.
+    if not input_path.exists():
+        print(f'Error: file not found {input_path}.')
+        sys.exit(1)
+
+    # Check if the file is SRT.
+    if input_path.suffix != '.srt':
+        print(f"Error: '{input_path.name}' is not a SRT file.")
+        sys.exit(1)
+
     # Build output path e.g. "movie.srt" → "movie_fixed.srt"
     output_path = input_path.with_stem(input_path.stem + '_fixed')
 
