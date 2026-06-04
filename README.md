@@ -70,6 +70,17 @@ python fix_subs.py movie.srt -1800
 
 ---
 
+## ❌ Error Handling
+
+The script will exit with a clear message if:
+
+- The file does not exist
+- The file is not an SRT file
+- The file is empty or contains no valid subtitles
+- The offset is larger than the first subtitle's start time
+
+---
+
 ## ⚠️ Known Limitations
 
 - **Malformed SRT blocks are silently skipped.** SRT files downloaded from sites like OpenSubtitles sometimes have formatting inconsistencies. The script will skip any malformed blocks and process the rest of the file.
