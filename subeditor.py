@@ -12,8 +12,20 @@ from pathlib import Path
 from fix_subs import fix_subtitles
 
 
-def get_input_file():
-    pass
+def get_input_file() -> str:
+    '''Get path to the SRT file.'''
+    while True:
+        input_path = Path(input('Enter file path to the SRT file: '))
+
+        if not input_path.exists():
+            print(f'Error: file not found: {input_path}')
+            continue
+
+        if input_path.suffix != '.srt':
+            print(f'Error: file is not SRT: {input_path}')
+            continue
+
+        return str(input_path)
 
 
 def get_direction():
@@ -29,7 +41,7 @@ def get_output_option(input_file):
 
 
 def run():
-    pass
+    get_input_file()
 
 
 if __name__ == "__main__":
