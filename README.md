@@ -10,16 +10,19 @@ A simple Python script that fixes out-of-sync `.srt` subtitle files by shifting 
 - The `srt` library
 
 **Using pipenv:**
+
 ```bash
 pipenv install
 ```
 
 **Using pip:**
+
 ```bash
 pip install -r requirements.txt
 ```
 
 **Or install directly:**
+
 ```bash
 pip install srt
 ```
