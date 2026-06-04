@@ -72,9 +72,8 @@ python fix_subs.py movie.srt -1800
 
 ## ⚠️ Known Limitations
 
-- **Mal-formatted SRT files will likely throw an error.** SRT files downloaded from sites like OpenSubtitles sometimes have formatting inconsistencies that cause the `srt` library to crash during parsing. If this happens, try opening the `.srt` file in a text editor and checking for unusual characters or broken timestamp lines.
-
-- This script applies a **single fixed offset** to all timestamps. If your subtitles start in sync but gradually drift out over time, a fixed offset won't fully solve the problem.
+- **Malformed SRT blocks are silently skipped.** SRT files downloaded from sites like OpenSubtitles sometimes have formatting inconsistencies. The script will skip any malformed blocks and process the rest of the file.
+- **Single fixed offset only.** If your subtitles start in sync but gradually drift out over time, a fixed offset won't fully solve the problem.
 
 ---
 
