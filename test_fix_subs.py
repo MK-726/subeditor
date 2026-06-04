@@ -142,3 +142,9 @@ def test_empty_srt_file(tmp_path):
 
     with pytest.raises(SystemExit):
         fix_subtitles(empty_file, 1_000)
+
+
+def test_missing_file_raises_error(tmp_path):
+    """Script should exit with an error if the file does not exist."""
+    with pytest.raises(SystemExit):
+        fix_subtitles(str(tmp_path / 'nonexistent.srt'), 1_000)
