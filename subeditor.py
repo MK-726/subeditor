@@ -28,8 +28,24 @@ def get_input_file() -> str:
         return str(input_path)
 
 
-def get_direction():
-    pass
+def get_direction() -> str:
+    '''Determine the sync direction (advance or delay).'''
+    print('STEP 2 — Sync Direction')
+    print('-' * 50)
+    while True:
+        print('[A]  Subs appear TOO LATE  → advance them (move earlier)')
+        print('[D]  Subs appear TOO EARLY → delay them  (move later)')
+        choice = input('Your choice (A / D): ').lower()
+
+        if choice not in ('a', 'd'):
+            print(f'Invalid value for direction: {choice}')
+            print('Try Again!\n')
+            continue
+
+        direction = 'delay' if choice == 'd' else 'advance'
+
+        print(f'✓ Will {direction} the subtitles')
+        return direction
 
 
 def get_offset():
@@ -42,6 +58,7 @@ def get_output_option(input_file):
 
 def run():
     get_input_file()
+    direction = get_direction()
 
 
 if __name__ == "__main__":
