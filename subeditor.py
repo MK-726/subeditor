@@ -44,12 +44,25 @@ def get_direction() -> str:
 
         direction = 'delay' if choice == 'd' else 'advance'
 
-        print(f'✓ Will {direction} the subtitles')
+        print(f'✓  Will {direction} the subtitles')
         return direction
 
 
-def get_offset():
-    pass
+def get_offset() -> int:
+    '''Get offset in ms.'''
+    print('\nSTEP 3 — Offset Amount')
+    while True:
+        try:
+            offset = int(input('Enter offset in ms: '))
+            if offset <= 0:
+                print('Offset must be a positive number.')
+                print('Try Again.\n')
+                continue
+            print(f'✓  Offset: {offset:,} ms ({offset / 1000:.2f} seconds)')
+            return offset
+        except ValueError:
+            print('Offset must be a whole number (e.g. 1800).')
+            print('Try Again.\n')
 
 
 def get_output_option(input_file):
@@ -59,6 +72,7 @@ def get_output_option(input_file):
 def run():
     get_input_file()
     direction = get_direction()
+    offset = get_offset()
 
 
 if __name__ == "__main__":
