@@ -16,11 +16,12 @@ SEPARATOR_SIZE = 80
 HEADER_TEXT = 'SUBEDITOR - Subtitle Editor Tool'
 
 
-def render_header() -> None:
-    '''Render the CLI header.'''
-    padding = ((SEPARATOR_SIZE - len(HEADER_TEXT)) // 2) * ' '
+def render_header(text: str = HEADER_TEXT) -> None:
+    '''Render the CLI section header.'''
+    padding = ((SEPARATOR_SIZE - len(text)) // 2) * ' '
+    print()
     print('=' * SEPARATOR_SIZE)
-    print(f'{padding}{HEADER_TEXT}')
+    print(f'{padding}{text}')
     print('=' * SEPARATOR_SIZE)
     print()
 
@@ -115,12 +116,32 @@ def get_output_option(input_file: str) -> str:
         return output_path
 
 
+def render_summary(
+    input_file: str, direction: str, offset: int, output: str
+) -> None:
+    '''Render the summary.'''
+    render_header(text='SUMMARY')
+    render_summary_info(input_file, direction, offset, output)
+
+
+def render_summary_info(
+        input_file: str, direction: str, offset: int, output: str
+) -> None:
+    '''Render the summary info.'''
+    print(f'File   : {input_file}')
+    print(
+        f'Action : {direction.title()} by {offset:,}ms ({offset / 1000:.2f}s)'
+    )
+    print(f'Output : {output}')
+
+
 def run():
     render_header()
     input_file = get_input_file()
     direction = get_direction()
     offset = get_offset()
     output = get_output_option(input_file)
+    render_summary(input_file, direction, offset, output)
 
 
 if __name__ == "__main__":
