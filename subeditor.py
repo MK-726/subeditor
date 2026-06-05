@@ -143,6 +143,7 @@ def run():
     offset = get_offset()
     output = get_output_option(input_file)
     render_summary(input_file, direction, offset, output)
+    signed_offset = offset if direction == 'delay' else -offset
 
 
 if __name__ == "__main__":
