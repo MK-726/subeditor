@@ -12,9 +12,22 @@ from pathlib import Path
 from fix_subs import fix_subtitles
 
 
+SEPARATOR_SIZE = 80
+HEADER_TEXT = 'SUBEDITOR - Subtitle Editor Tool'
+
+
+def render_header() -> None:
+    '''Render the CLI header.'''
+    padding = ((SEPARATOR_SIZE - len(HEADER_TEXT)) // 2) * ' '
+    print('=' * SEPARATOR_SIZE)
+    print(f'{padding}{HEADER_TEXT}')
+    print('=' * SEPARATOR_SIZE)
+    print()
+
+
 def get_input_file() -> str:
     '''Get path to the SRT file.'''
-    print('STEP 1 — Subtitle File')
+    print('\nSTEP 1 — Subtitle File')
     print('-' * 50)
     while True:
         print('Drag and drop your SRT file into this window,'
@@ -101,9 +114,7 @@ def get_output_option(input_file: str) -> str:
 
 
 def run():
-    get_input_file()
-    direction = get_direction()
-    offset = get_offset()
+    pass
 
 
 if __name__ == "__main__":
