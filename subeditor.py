@@ -136,6 +136,7 @@ def render_summary_info(
 
 
 def run():
+    '''Run the interactive CLI.'''
     render_header()
     input_file = get_input_file()
     direction = get_direction()
