@@ -27,8 +27,8 @@ def render_header() -> None:
 
 def get_input_file() -> str:
     '''Get path to the SRT file.'''
-    print('\nSTEP 1 — Subtitle File')
-    print('-' * 50)
+    print('STEP 1 — Subtitle File')
+    print('-' * SEPARATOR_SIZE)
     while True:
         print('Drag and drop your SRT file into this window,'
               ' or type the full path to it.')
@@ -114,7 +114,8 @@ def get_output_option(input_file: str) -> str:
 
 
 def run():
-    pass
+    render_header()
+    input_file = get_input_file()
 
 
 if __name__ == "__main__":
