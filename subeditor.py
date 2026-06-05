@@ -49,8 +49,8 @@ def get_input_file() -> str:
 
 def get_direction() -> str:
     '''Determine the sync direction (advance or delay).'''
-    print('STEP 2 — Sync Direction')
-    print('-' * 50)
+    print('\nSTEP 2 — Sync Direction')
+    print('-' * SEPARATOR_SIZE)
     while True:
         print('[A]  Subs appear TOO LATE  → advance them (move earlier)')
         print('[D]  Subs appear TOO EARLY → delay them  (move later)')
@@ -116,6 +116,7 @@ def get_output_option(input_file: str) -> str:
 def run():
     render_header()
     input_file = get_input_file()
+    direction = get_direction()
 
 
 if __name__ == "__main__":
