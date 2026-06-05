@@ -70,6 +70,7 @@ def get_direction() -> str:
 def get_offset() -> int:
     '''Get offset in ms.'''
     print('\nSTEP 3 — Offset Amount')
+    print('-' * SEPARATOR_SIZE)
     while True:
         try:
             offset = int(input('Enter offset in ms: '))
@@ -117,6 +118,7 @@ def run():
     render_header()
     input_file = get_input_file()
     direction = get_direction()
+    offset = get_offset()
 
 
 if __name__ == "__main__":
