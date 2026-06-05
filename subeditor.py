@@ -88,7 +88,8 @@ def get_offset() -> int:
 def get_output_option(input_file: str) -> str:
     '''Get output file path.'''
     print('\nSTEP 4 — Output File')
-    print('-' * 50)
+    print('-' * SEPARATOR_SIZE)
+    print('Where should the corrected file be saved?')
     input_path = Path(input_file)
 
     while True:
@@ -119,6 +120,7 @@ def run():
     input_file = get_input_file()
     direction = get_direction()
     offset = get_offset()
+    output = get_output_option(input_file)
 
 
 if __name__ == "__main__":
