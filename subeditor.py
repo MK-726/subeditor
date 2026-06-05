@@ -133,9 +133,27 @@ def render_summary_info(
         f'Action : {direction.title()} by {offset:,}ms ({offset / 1000:.2f}s)'
     )
     print(f'Output : {output}')
+    print()
 
 
-def run():
+def is_confirmed() -> bool:
+    ''''Ask user to confirm before applying changes.'''
+    while True:
+        prompt = 'Looks good? Apply changes? (Y / N): '
+        confirmation = input(prompt).lower().strip()
+
+        if confirmation not in ('y', 'n'):
+            print('Error. Invalid value. Try Again.')
+            continue
+
+        if confirmation == 'n':
+            return False
+
+        if confirmation == 'y':
+            return True
+
+
+def run() -> None:
     '''Run the interactive CLI.'''
     render_header()
     input_file = get_input_file()
@@ -144,6 +162,12 @@ def run():
     output = get_output_option(input_file)
     render_summary(input_file, direction, offset, output)
     signed_offset = offset if direction == 'delay' else -offset
+    if is_confirmed():
+        fix_subtitles(input_file, signed_offset)
+        print('✓  Subtitle file updated successfully!')
+    else:
+        print('\nCancelled. No files were changed.')
+        sys.exit(0)
 
 
 if __name__ == "__main__":
